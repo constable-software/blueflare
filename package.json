@@ -1,0 +1,15 @@
+{
+  "name": "constsoft",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend",
+    "shared"
+  ],
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "be": "yarn workspace @constsoft/backend",
+    "fe": "yarn workspace @constsoft/frontend"
+  }
+}
