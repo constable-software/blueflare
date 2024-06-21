@@ -1,5 +1,5 @@
 {
-  "name": "@constsoft/frontend",
+  "name": "@blueflare/frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@constsoft/shared": "*",
+    "@blueflare/shared": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@chakra-ui/react": "^2.8.2",

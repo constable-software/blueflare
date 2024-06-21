@@ -9,7 +9,7 @@
   "dependencies": {},
   "devDependencies": {},
   "scripts": {
-    "be": "yarn workspace @constsoft/backend",
-    "fe": "yarn workspace @constsoft/frontend"
+    "be": "yarn workspace @blueflare/backend",
+    "fe": "yarn workspace @blueflare/frontend"
   }
 }
