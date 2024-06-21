@@ -5,7 +5,11 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@types/ws": "^8.5.10",
     "tsx": "^4.15.6",
     "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "ws": "^8.17.1"
   }
 }
