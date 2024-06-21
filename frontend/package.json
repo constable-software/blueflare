@@ -17,7 +17,6 @@
     "@arcgis/map-components": "^4.29.10",
     "@arcgis/map-components-react": "^4.29.10",
     "@chakra-ui/react": "^2.8.2",
-    "@constsoft/shared": "*",
     "@esri/calcite-components": "^2.9.0",
     "@fluentui/react-icons": "^2.0.245",
     "@tanstack/react-query": "^5.28.14",
