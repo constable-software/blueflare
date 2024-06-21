@@ -1,0 +1,11 @@
+{
+  "name": "@blueflare/engine",
+  "version": "1.0.0",
+  "description": "Data ingest engine",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "tsx": "^4.15.6",
+    "typescript": "^5.5.2"
+  }
+}
