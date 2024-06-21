@@ -60,3 +60,10 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # OpenAPI client
 _client
 !_client/.gitkeep
+
+# arcgis BS
+ArcGIS Project_index/
+.backups/
+GpMessages/
+ImportLog/
+*.lock
