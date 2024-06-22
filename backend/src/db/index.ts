@@ -1,6 +1,8 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
-import { DB_URL } from "./config";
+import { DB_URL } from "../config";
+
+export * from "./cache";
 
 export function initDB() {
   const client = new Client({

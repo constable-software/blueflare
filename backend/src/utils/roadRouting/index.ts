@@ -6,19 +6,10 @@ import { EsriJSONRoute } from "./types";
 
 export * from "./types";
 
-export const REALLY_CRAPPY_CACHE: {
-  [key: string]: GeoJSONFeatureCollection;
-} = {};
-
 export async function getArcGISRoute(
   a: Coordinate,
   b: Coordinate,
 ): Promise<GeoJSONFeatureCollection | null> {
-  if (REALLY_CRAPPY_CACHE[JSON.stringify([a, b])]) {
-    console.debug("[ARCGIS]: Cache hit ;)");
-    return REALLY_CRAPPY_CACHE[JSON.stringify([a, b])];
-  }
-
   console.debug("[ARCGIS]: Requesting routing info from ArcGIS API");
   try {
     const res = await axios.get(ROUTE_API, {
@@ -50,7 +41,6 @@ export async function getArcGISRoute(
         },
       })),
     };
-    REALLY_CRAPPY_CACHE[JSON.stringify([a, b])] = resp;
     return resp;
   } catch (e) {
     console.log(e);
