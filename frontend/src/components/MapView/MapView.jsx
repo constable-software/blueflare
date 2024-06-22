@@ -12,13 +12,13 @@ import useSignals from "../../pages/useSignals";
 const MapComponent = () => {
   const mapDiv = useRef(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [mapCorners, setMapCorners] = useState({topLeft: null, bottomRight: null});
+  const [mapCorners, setMapCorners] = useState({ topLeft: null, bottomRight: null });
   const incident = { lat: -31.886050214319926, long: 116.00576453014557 }; // 5km away from Perth CBD
 
   useEffect(() => {
 
   }, [mapCorners])
-  
+
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -33,9 +33,9 @@ const MapComponent = () => {
   // console.log(signalQuery)
 
   useEffect(() => {
-    if (currentLocation && roadRouteQuery.isSuccess && roadRouteQuery.data && roadRouteQuery.data.features) {
+    if (currentLocation && roadRouteQuery.isSuccess && roadRouteQuery.data && roadRouteQuery.data.geojson.features) {
       console.log("Road route query was successful and data is available.");
-      const geoJSONData = roadRouteQuery.data;
+      const geoJSONData = roadRouteQuery.data.geojson;
 
       const map = new EsriMap({
         basemap: "dark-gray" // Changed basemap to dark-gray for a dark theme
@@ -45,7 +45,10 @@ const MapComponent = () => {
         container: mapDiv.current,
         map: map,
         center: [currentLocation.long, currentLocation.lat],
-        scale: 10000
+        scale: 10000,
+        spatialReference: {
+          wkid: 4326
+        }
       });
 
       // Add click event to display lat and long
@@ -54,7 +57,7 @@ const MapComponent = () => {
       });
 
       // Store the top left and bottom right coordinates of the map in state
-      view.watch("extent", function(extent) {
+      view.watch("extent", function (extent) {
         const newMapCorners = {
           topLeft: { lat: extent.ymax, long: extent.xmin },
           bottomRight: { lat: extent.ymin, long: extent.xmax }
