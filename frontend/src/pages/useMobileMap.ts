@@ -1,20 +1,14 @@
-import { useQuery } from 'react-query';
-import { client } from '../lib/utils'; // Assuming trpc is initialized in utils/trpc
 
-type Coordinate = {
-  lat: number;
-  long: number;
-};
+import { trpc } from '../../utils/trpc';
+import { getArcGISRoute } from '../../../backend/src/utils/roadRoute';
+
+export type Coordinate = Parameters<typeof getArcGISRoute>[0];
 
 function useMobileMap(currentLocation: Coordinate, incident: Coordinate) {
-  const fetchRoute = async () => {
-    const data = await trpc.getRoadRoute.query({ a: currentLocation, b: incident });
-    return data;
-  };
+  const roadRouteQuery = trpc.getRoadRoute.useQuery({ a: currentLocation, b: incident });
+  console.log(roadRouteQuery)
 
-  const { data, error, isLoading, isError } = useQuery(['roadRoute', currentLocation, incident], fetchRoute);
-
-  return { data, error, isLoading, isError };
+  return roadRouteQuery;
 }
 
 export default useMobileMap;

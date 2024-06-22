@@ -9,8 +9,14 @@ import Point from "@arcgis/core/geometry/Point";
 import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
 import Polyline from "@arcgis/core/geometry/Polyline";
 import SimpleLineSymbol from "@arcgis/core/symbols/SimpleLineSymbol";
+// import useMobileMap from "../pages/useMobileMap";
 
 const MapComponent = () => {
+
+  // const currentLocation = { lat: 40.7128, long: -74.0060 }; // Dummy coordinates for New York City
+  // const incident = { lat: 34.0522, long: -118.2437 }; // Dummy coordinates for Los Angeles
+  // const _ = useMobileMap(currentLocation, incident);
+  // console.log(_)
 
   const mapDiv = useRef(null);
   const [location, setLocation] = useState([115.8575, -31.9505]); // Default coordinates for Perth, Australia
@@ -84,6 +90,8 @@ const MapComponent = () => {
           longitude: event.mapPoint.longitude,
           latitude: event.mapPoint.latitude
         });
+
+        console.log(point.longitude, point.latitude)
 
         // Create a graphic and add the geometry and symbol to it
         const pointGraphic = new Graphic({

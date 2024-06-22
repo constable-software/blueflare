@@ -1,7 +1,8 @@
 {
-  "name": "@contsoft/backend",
+  "name": "@blueflare/backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
+  "private": true,
   "license": "MIT",
   "devDependencies": {
     "@types/axios": "^0.14.0",
