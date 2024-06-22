@@ -5,7 +5,6 @@ const ANOTHER_CRAPPY_CACHE: {
 } = {};
 
 export function getSignalColour(id: string): SignalColour {
-    console.debug("SIGNAL")
   if (ANOTHER_CRAPPY_CACHE[id]) {
     console.debug("[SIGNALS]: Cache hit ;)");
     // TODO: calc something here
