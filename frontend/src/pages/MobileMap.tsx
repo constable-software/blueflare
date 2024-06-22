@@ -1,12 +1,16 @@
 import { defineCustomElements } from "@arcgis/map-components/dist/loader";
 import MapView from "../components/MapView/MapView";
+import PreIncidentMapView from "../components/MapView/PreIncidentMapView";
 import logo from "../assets/image.png";
-
+import { useState } from "react";
 
 function MobileMap() {
   defineCustomElements(window, {
     resourcesUrl: "https://js.arcgis.com/map-components/4.29/assets",
   });
+  const { totalTravelTime, totalDistance } = JSON.parse(localStorage.getItem('properties') ?? '{}');
+  const [incidentAccepted, setIncidentAccepted] = useState(false);
+
   return (
     <div className="bg-black">
       <header className="flex justify-between items-center px-5 bg-black">
@@ -46,20 +50,21 @@ function MobileMap() {
           onMouseUp={(e) => {
             e.currentTarget.style.opacity = '1';
           }}
+          onClick={() => setIncidentAccepted(true)}
         >
           Accept Incident
         </button>
         <div className="map-header flex gap-x-2" style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', backgroundColor: '#000' }}>
           <div className="time-to-destination flex gap-x-2" style={{ alignItems: 'center', width: '200px', color: 'white' }}>
             <span>Time Remaining:</span>
-            <span>{/* Time in minutes goes here */} 20min</span>
+            <span>{totalTravelTime} min</span>
           </div>
-          <div className="speed-limit flex gap-x-2" style={{ alignItems: 'center', width: '200px', color: 'white' }}>
-            <span>Speed limit: </span>
-            <span>{/* Speed limit goes here */} 29km</span>
+          <div className="distance-travelled flex gap-x-2" style={{ alignItems: 'center', width: '200px', color: 'white' }}>
+            <span>Distance Travelled: </span>
+            <span>{totalDistance} km</span>
           </div>
         </div>
-        <MapView />
+        {incidentAccepted ? <MapView /> : <PreIncidentMapView />}
       </div>
     </div>
   );
