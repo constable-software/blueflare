@@ -1,10 +1,13 @@
-import { initTRPC } from '@trpc/server';
+import { initTRPC } from "@trpc/server";
+import { OpenApiMeta } from "trpc-swagger";
 
 /**
  * Initialization of tRPC backend
  * Should be done only once per backend!
  */
-const t = initTRPC.create();
+const t = initTRPC
+  .meta<OpenApiMeta>()
+  .create();
 
 /**
  * Export reusable router and procedure helpers

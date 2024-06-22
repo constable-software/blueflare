@@ -1,22 +1,30 @@
 import { z } from "zod";
 import { publicProcedure } from "../trpc";
-import { GeoJSONSchema } from "zod-geojson";
-import { getArcGISRoute } from "../utils/roadRoute";
+import { GeoJSONFeatureCollection, GeoJSONFeatureCollectionSchema} from "zod-geojson";
+import { getArcGISRoute } from "../utils/roadRouting";
+import { CoordinateSchema } from "../types";
 
-const COORDINATE = z.object({
-    lat: z.number(),
-    long: z.number(),
-})
+export const REALLY_CRAPPY_CACHE: {
+    [key: string]: GeoJSONFeatureCollection
+} = {}
 
 export const getRoadRoute = publicProcedure
-    .meta({ openapi: { method: "GET", path: "/routing/roadRoute" } })
-    .input(
-        z.object({
-            a: COORDINATE,
-            b: COORDINATE
-        })
-    )
-    .output(GeoJSONSchema)
-    .query(async ({ input }) => {
-        return await getArcGISRoute(input.a, input.b)
-    })
+  .input(
+    z.object({
+      a: CoordinateSchema,
+      b: CoordinateSchema,
+    }),
+  )
+  .output(GeoJSONFeatureCollectionSchema)
+  .query(async ({ input }) => {
+    if (REALLY_CRAPPY_CACHE[JSON.stringify(input)]) {
+      return REALLY_CRAPPY_CACHE[JSON.stringify(input)];
+    }
+    console.log(input);
+    const res = await getArcGISRoute(input.a, input.b);
+    if (!res) {
+      throw new Error("Failed to get route from ArcGIS");
+    }
+    REALLY_CRAPPY_CACHE[JSON.stringify(input)] = res;
+    return res;
+  });
