@@ -2,6 +2,7 @@ import express from 'express';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { getRoadRoute } from "./routes/routing";
 import { router } from "./trpc";
+import cors from 'cors'
 
 const appRouter = router({
   getRoadRoute,
@@ -12,8 +13,14 @@ const appRouter = router({
 export type AppRouter = typeof appRouter;
 
 const app = express();
+app.use(cors())
 
 app.use('/api/trpc', createExpressMiddleware({ router: appRouter }));
-// app.use('/api', createOpenApiExpressMiddleware({ router: appRouter })); /* 👈 */
+// app.use('/api', createOpenApiExpressMiddleware({ router: appRouter, createContext })); /* 👈 */
 
-app.listen(3000);
+// app.use('/', swaggerUi.serve);
+// app.get('/', swaggerUi.setup(openApiDocument));
+
+app.listen(3000, () => {
+  console.log('Server started on http://localhost:3000');
+});

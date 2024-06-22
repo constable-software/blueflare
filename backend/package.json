@@ -2,18 +2,26 @@
   "name": "@blueflare/backend",
   "version": "1.0.0",
   "main": "index.ts",
-  "private": true,
   "license": "MIT",
+  "private": true,
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/geojson": "^7946.0.14",
+    "@types/pg": "^8.11.6",
+    "drizzle-kit": "^0.22.7",
     "tsx": "^4.15.6",
     "typescript": "^5.4.5"
   },
   "dependencies": {
     "@trpc/server": "^11.0.0-rc.413",
+    "@types/cors": "^2.8.17",
+    "@types/swagger-ui-express": "^4.1.6",
     "axios": "^1.7.2",
+    "cors": "^2.8.5",
+    "drizzle-orm": "^0.31.2",
     "express": "^4.19.2",
+    "pg": "^8.12.0",
+    "swagger-ui-express": "^5.0.1",
     "trpc-openapi": "^1.2.0",
     "zod": "^3.23.8",
     "zod-geojson": "^0.0.1"
