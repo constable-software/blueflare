@@ -1,12 +1,14 @@
 import { z } from "zod";
 import { publicProcedure } from "../trpc";
-import { GeoJSONFeatureCollection, GeoJSONFeatureCollectionSchema} from "zod-geojson";
+import {
+  GeoJSONFeatureCollection,
+  GeoJSONFeatureCollectionSchema,
+  GeoJSONLineStringSchema,
+} from "zod-geojson";
 import { getArcGISRoute } from "../utils/roadRouting";
 import { CoordinateSchema } from "../types";
-
-export const REALLY_CRAPPY_CACHE: {
-    [key: string]: GeoJSONFeatureCollection
-} = {}
+import { db } from "../db";
+import { sql } from "drizzle-orm";
 
 export const getRoadRoute = publicProcedure
   .input(
@@ -15,16 +17,60 @@ export const getRoadRoute = publicProcedure
       b: CoordinateSchema,
     }),
   )
-  .output(GeoJSONFeatureCollectionSchema)
+  .output(z.object({ id: z.number(), geojson: GeoJSONFeatureCollectionSchema }))
   .query(async ({ input }) => {
-    if (REALLY_CRAPPY_CACHE[JSON.stringify(input)]) {
-      return REALLY_CRAPPY_CACHE[JSON.stringify(input)];
+    const cacheKey = JSON.stringify([input.a, input.b]);
+    // First check if we already have it in the database
+    const cached = await db.execute<{ id: number; geom: any }>(
+      sql`select id, ST_AsGeoJSON(geom) as geom from route_cache where key = ${cacheKey}`,
+    );
+
+    if (cached.rows.length > 0) {
+      try {
+        const feature = await GeoJSONLineStringSchema.parseAsync(
+          JSON.parse(cached.rows[0].geom),
+        );
+
+        const geojson: GeoJSONFeatureCollection = {
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature",
+              properties: {},
+              geometry: feature,
+            },
+          ],
+        };
+
+        return {
+          id: cached.rows[0].id,
+          geojson,
+        };
+      } catch (e) {
+        console.log(e);
+      }
     }
-    console.log(input);
     const res = await getArcGISRoute(input.a, input.b);
-    if (!res) {
-      throw new Error("Failed to get route from ArcGIS");
+    // super damn hacky
+
+    await db.execute(
+      sql`insert into route_cache (key, geom) values (${cacheKey}, ST_GeomFromGeoJSON(${
+        res?.features[0].geometry
+      }))`,
+    );
+
+    try {
+      const cachedRec = await db.execute<{ id: number }>(
+        sql`select id from route_cache where key = ${cacheKey}`,
+      );
+      if (!res) {
+        throw new Error("Failed to get route from ArcGIS");
+      }
+      return {
+        id: cachedRec.rows[0].id,
+        geojson: res,
+      };
+    } catch (e) {
+      console.log(e);
     }
-    REALLY_CRAPPY_CACHE[JSON.stringify(input)] = res;
-    return res;
   });
