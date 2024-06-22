@@ -1,5 +1,6 @@
 
-import React, { useRef } from "react";
+
+import React, {  useRef } from "react";
 import MapView from "@arcgis/core/views/MapView";
 import EsriMap from "@arcgis/core/Map";
 import Graphic from "@arcgis/core/Graphic";
@@ -27,7 +28,7 @@ const MapComponent = () => {
       latitude: incident.lat
     },
     symbol: new SimpleMarkerSymbol({
-      color: "grey",
+      color: "red",
       size: "8px",
       outline: {
         color: "white",
@@ -42,3 +43,5 @@ const MapComponent = () => {
 };
 
 export default MapComponent;
+
+
