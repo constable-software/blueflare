@@ -3,9 +3,11 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { getRoadRoute } from "./routes/routing";
 import { router } from "./trpc";
 import cors from "cors";
+import { getSignals } from "./routes/signals";
 
 const appRouter = router({
   getRoadRoute,
+  getSignals
 });
 
 // Export type router type signature,

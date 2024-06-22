@@ -26,14 +26,13 @@ CREATE TABLE geo_anpr_path (
 );
 -- MRWA Signalised intersections
 CREATE TABLE geo_signalised_intersection (
-    id integer not null,
-    geom geometry(Point, 4326),
-    site_refer character varying(50),
-    service_st character varying(50),
-    signal_typ character varying(12),
-    node_id double precision,
-    node_name character varying(30),
-    node_descr character varying(80)
+    objectid integer not null,
+	id character varying(50),
+    status character varying(50),
+    type character varying(25),
+    road_net_node int,
+    description character varying(250),
+    geom geometry(Point, 4326)
 );
 CREATE INDEX geo_signalised_intersection_geom_x ON geo_signalised_intersection USING GIST (geom);
 

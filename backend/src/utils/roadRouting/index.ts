@@ -2,9 +2,9 @@ import axios from "axios";
 import { GeoJSONFeature, GeoJSONFeatureCollection } from "zod-geojson";
 import { API_KEY, ROUTE_API } from "../../config";
 import { Coordinate } from "../../types";
-import { EsriJSONRoute } from "./esriJson";
+import { EsriJSONRoute } from "./types";
 
-export * from "./esriJson";
+export * from "./types";
 
 export const REALLY_CRAPPY_CACHE: {
   [key: string]: GeoJSONFeatureCollection;

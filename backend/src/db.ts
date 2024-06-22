@@ -2,13 +2,14 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
 import { DB_URL } from "./config";
 
-export async function initDB() {
+export function initDB() {
   const client = new Client({
     connectionString: DB_URL,
   });
 
-  await client.connect();
+  client.connect()
+    .then(() => console.log("Connected to database"));
   return drizzle(client);
 }
 
-export const db = await initDB();
+export const db = initDB();
