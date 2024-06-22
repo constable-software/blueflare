@@ -1,5 +1,5 @@
 import { defineCustomElements } from "@arcgis/map-components/dist/loader";
-import MapView from "../components/MapView";
+import MapView from "../components/MapView/MapView";
 import logo from "../assets/image.png";
 
 

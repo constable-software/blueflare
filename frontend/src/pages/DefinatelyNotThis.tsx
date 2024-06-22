@@ -1,5 +1,5 @@
 import { defineCustomElements } from "@arcgis/map-components/dist/loader";
-import MapView from "../components/MapView";
+import MapView from "../components/MapView/MapView";
 
 function Map() {
   defineCustomElements(window, {
