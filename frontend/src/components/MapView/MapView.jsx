@@ -7,7 +7,8 @@ import Polyline from "@arcgis/core/geometry/Polyline";
 import EsriMap from "@arcgis/core/Map";
 import Graphic from "@arcgis/core/Graphic";
 import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
-import useSignals from "../../pages/useSignals";
+import { createTrafficLightGraphic } from "./components/TrafficLight";
+
 
 const MapComponent = () => {
   const mapDiv = useRef(null);
@@ -76,26 +77,13 @@ const MapComponent = () => {
           })
           .then(data => {
             console.log("Received data:", data);
-            if (data.result && data.result.data && data.result.data.features) {
-              const features = data.result.data.features;
+            if (data[0] && data[0].result && data[0].result.data) {
+              const features = data[0].result.data.features;
               console.log("Processing features:", features);
               features.forEach(feature => {
-                const graphic = new Graphic({
-                  geometry: {
-                    type: "point",
-                    longitude: feature.geometry.coordinates[0],
-                    latitude: feature.geometry.coordinates[1]
-                  },
-                  symbol: new SimpleMarkerSymbol({
-                    color: [226, 119, 40],
-                    outline: {
-                      color: [255, 255, 255],
-                      width: 2
-                    }
-                  })
-                });
-                console.log("Adding graphic to view:", graphic);
-                view.graphics.add(graphic);
+                const trafficLightGraphic = createTrafficLightGraphic(feature.geometry.coordinates[0], feature.geometry.coordinates[1], feature.properties.currentColour);
+                console.log("Adding traffic light graphic to view:", trafficLightGraphic);
+                view.graphics.add(trafficLightGraphic);
               });
             }
           });

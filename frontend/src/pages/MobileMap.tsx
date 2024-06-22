@@ -33,7 +33,7 @@ function MobileMap() {
         </div>
       </header>
       <div style={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
-        <button
+{ !incidentAccepted &&       <button
           style={{
             backgroundColor: 'red',
             color: 'white',
@@ -53,15 +53,15 @@ function MobileMap() {
           onClick={() => setIncidentAccepted(true)}
         >
           Accept Incident
-        </button>
+        </button>}
         <div className="map-header flex gap-x-2" style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', backgroundColor: '#000' }}>
           <div className="time-to-destination flex gap-x-2" style={{ alignItems: 'center', width: '200px', color: 'white' }}>
             <span>Time Remaining:</span>
-            <span>{totalTravelTime} min</span>
+            <span>{Math.floor(totalTravelTime ?? 0)}m {Math.round((totalTravelTime - Math.floor(totalTravelTime ?? 0)) * 60)}s</span>
           </div>
           <div className="distance-travelled flex gap-x-2" style={{ alignItems: 'center', width: '200px', color: 'white' }}>
             <span>Distance Travelled: </span>
-            <span>{totalDistance} km</span>
+            <span>{(totalDistance ?? 0).toFixed(2)} km</span>
           </div>
         </div>
         {incidentAccepted ? <MapView /> : <PreIncidentMapView />}
