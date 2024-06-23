@@ -17,7 +17,7 @@ export async function getArcGISRoute(
         f: "json",
         token: API_KEY,
         stops: `${a.long},${a.lat};${b.long},${b.lat}`,
-        startTime: "now",
+        startTime: "2024-06-25T20:00:00.000Z",
         returnDirections: false,
       },
     });
