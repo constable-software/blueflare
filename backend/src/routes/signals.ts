@@ -50,9 +50,11 @@ export const getSignalsAlongRoute = publicProcedure
     // DB query
     const queryRes = await db.execute<{ feature: SignalGeoJSON }>(
       sql`
-        select 
-            ST_AsGeoJSON(t.*)::json as feature
-        from (
+select ST_AsGeoJSON(ST_Intersection(signals.geom, route.geom))
+	from (
+		select * from route_cache where id = 26
+	) route,
+	geo_signalised_intersection signals
       `,
     );
   });
