@@ -7,16 +7,8 @@ import {
   integer,
   pgTable,
   serial,
-  timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import {
-  SIGNALS_GREEN_LIGHT_RANGE,
-  SIGNALS_RED_LIGHT_RANGE,
-  SIGNALS_YELLOW_LIGHT_RANGE,
-} from "../config";
-
-import { getRandomInt } from "../utils/utils";
 
 export const routeCache = pgTable("route_cache", {
   id: serial("id").primaryKey(),
