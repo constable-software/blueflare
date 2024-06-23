@@ -10,24 +10,14 @@ import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol";
 import { createTrafficLightGraphic } from "./components/TrafficLight";
 
 
-const MapComponent = () => {
+const MapComponent = ({currentLocation}) => {
   const mapDiv = useRef(null);
-  const [currentLocation, setCurrentLocation] = useState(null);
   const [mapCorners, setMapCorners] = useState({ topLeft: null, bottomRight: null });
   const incident = { lat: -31.886050214319926, long: 116.00576453014557 }; // 5km away from Perth CBD
 
   useEffect(() => {
 
   }, [mapCorners])
-
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setCurrentLocation({ lat: position.coords.latitude, long: position.coords.longitude });
-      });
-    }
-  }, []);
 
   const roadRouteQuery = useMobileMap(currentLocation, incident);
   // const signalQuery = useSignals()
@@ -41,11 +31,11 @@ const MapComponent = () => {
       const map = new EsriMap({
         basemap: "dark-gray" // Changed basemap to dark-gray for a dark theme
       });
-
+    
       const view = new MapView({
         container: mapDiv.current,
         map: map,
-        center: [currentLocation.long, currentLocation.lat],
+        center: [currentLocation?.long ?? 0, currentLocation?.lat ?? 0],
         scale: 10000,
         spatialReference: {
           wkid: 4326
@@ -165,3 +155,6 @@ const MapComponent = () => {
 };
 
 export default MapComponent;
+
+
+

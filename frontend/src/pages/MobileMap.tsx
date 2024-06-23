@@ -1,8 +1,9 @@
 import { defineCustomElements } from "@arcgis/map-components/dist/loader";
-import MapView from "../components/MapView/MapView";
+// import MapView from "../components/MapView/MapView";
 import PreIncidentMapView from "../components/MapView/PreIncidentMapView";
+import PostIncidentMapView from "../components/MapView/PosIncidentMapView";
 import logo from "../assets/image.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function MobileMap() {
   defineCustomElements(window, {
@@ -10,6 +11,22 @@ function MobileMap() {
   });
   const { totalTravelTime, totalDistance } = JSON.parse(localStorage.getItem('properties') ?? '{}');
   const [incidentAccepted, setIncidentAccepted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  type Location = {
+    lat: number;
+    long: number;
+  } | null;
+
+  const [currentLocation, setCurrentLocation] = useState<Location>(null);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setCurrentLocation({ lat: position.coords.latitude, long: position.coords.longitude });
+        setLoading(false)
+      });
+    }
+  }, []);
 
   return (
     <div className="bg-black">
@@ -54,7 +71,7 @@ function MobileMap() {
         >
           Accept Incident
         </button>}
-        <div className="map-header flex gap-x-2" style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', backgroundColor: '#000' }}>
+        {incidentAccepted && <div className="map-header flex gap-x-2" style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', backgroundColor: '#000' }}>
           <div className="time-to-destination flex gap-x-2" style={{ alignItems: 'center', width: '200px', color: 'white' }}>
             <span>Time Remaining:</span>
             <span>{Math.floor(totalTravelTime ?? 0)}m {Math.round((totalTravelTime - Math.floor(totalTravelTime ?? 0)) * 60)}s</span>
@@ -63,8 +80,8 @@ function MobileMap() {
             <span>Distance Travelled: </span>
             <span>{(totalDistance ?? 0).toFixed(2)} km</span>
           </div>
-        </div>
-        {incidentAccepted ? <MapView /> : <PreIncidentMapView />}
+        </div>}
+        {incidentAccepted ? loading ? <>Loading...</> : <PostIncidentMapView currentLocation={currentLocation} /> : <PreIncidentMapView currentLocation={currentLocation} />}
       </div>
     </div>
   );
