@@ -10,13 +10,7 @@ export const SignalPhaseSchema = z.object({
   id: z.string(),
   lastRed: z.date(),
   currentColor: SignalColourSchema,
-  nextColor: z.enum(["green", "yellow", "red"]),
   timeRemaining: z.number(),
-  timings: z.object({
-    red: z.number(),
-    yellow: z.number(),
-    green: z.number(),
-  }),
 });
 
 export type SignalPhase = z.infer<typeof SignalPhaseSchema>;

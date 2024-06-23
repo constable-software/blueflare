@@ -21,7 +21,7 @@ export const getRoadRoute = publicProcedure
   .query(async ({ input }) => {
     const cacheKey = JSON.stringify([input.a, input.b]);
     // First check if we already have it in the database
-    const cached = await db.execute<{ id: number; geom: any }>(
+    const cached = await db.execute<{ id: number; geom: string }>(
       sql`select id, ST_AsGeoJSON(geom) as geom from route_cache where key = ${cacheKey}`,
     );
 
